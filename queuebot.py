@@ -85,14 +85,15 @@ class QueueBot(irc.client.SimpleIRCClient):
                 self.say('Queue is now disabled')
 
     def c_queue_clear(self, chatconn, username, extra_message):
-        if username in self.admins:
-            self.queue.clear()
-            self.sub_queue.clear()
-            self.say('Queue cleared PogChamp')
-
-    def c_queue_list(self, chatconn, username, extra_message):
         if self.queue_active:
             if username in self.admins:
+                self.queue.clear()
+                self.sub_queue.clear()
+                self.say('The queue has been cleared PogChamp')
+
+    def c_queue_list(self, chatconn, username, extra_message):
+        if username in self.admins:
+            if self.queue_active:
                 combined_queue = self.sub_queue + self.queue
                 if len(combined_queue) > 0:
                     queue_str = 'Current queue: {0}'.format(', '.join(combined_queue[:15]))
@@ -101,8 +102,8 @@ class QueueBot(irc.client.SimpleIRCClient):
                     self.say(queue_str)
                 else:
                     self.say('The queue is empty BibleThump')
-        else:
-            self.say('The queue is not active! Admins can type \'!queue enable\' to enable the queue.')
+            else:
+                self.say('The queue is not active! Admins can type \'!queue enable\' to enable the queue.')
 
     def c_queue_pop(self, chatconn, username, extra_message):
         if username in self.admins:
@@ -137,7 +138,6 @@ class QueueBot(irc.client.SimpleIRCClient):
         self.commands['!queue disable'] = self.c_queue_disable
         self.commands['!queue off'] = self.c_queue_disable
         self.commands['!queue clear'] = self.c_queue_clear
-        self.commands['!queue'] = self.c_queue_list
         self.commands['!queue list'] = self.c_queue_list
         self.commands['!queue show'] = self.c_queue_list
         self.commands['!queue pop'] = self.c_queue_pop

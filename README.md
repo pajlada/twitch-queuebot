@@ -4,7 +4,7 @@
 
 This is a simple bot for handling queues in twitch chat. Subs have priority over regulars in the queue.
 
-The bot is coded is tested in Python 3.4
+The bot is coded and tested in Python 3.4
 
 ## Download
 

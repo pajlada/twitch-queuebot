@@ -144,9 +144,6 @@ class QueueBot(irc.client.SimpleIRCClient):
         self.commands['!queue winner'] = self.c_queue_pop
         self.commands['!queue next'] = self.c_queue_pop
 
-        # Not sure how to fetch admins in chat yet....
-        self.admins.append('pajlada')
-
     def on_mode(self, chatconn, event):
         if len(event.arguments) > 1:
             username = event.arguments[1].lower()

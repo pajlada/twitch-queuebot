@@ -35,3 +35,4 @@ Command                     | Description
 !queue clear                | Clear all participants from the queue
 !queue list                 | List the first ~15 participants in the queue.
 !queue winner               | Remove the person who's first in the queue and print his name.
+!queue pos [USERNAME]       | Check the position of a user. If no username is given, check yourself.

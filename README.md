@@ -33,5 +33,5 @@ Command                     | Description
 !queue enable               | Start the queue
 !queue disable              | Stop the queue
 !queue clear                | Clear all participants from the queue
-!queue                      | List the participants of the queue (up to ~15)
+!queue list                 | List the first ~15 participants in the queue.
 !queue winner               | Remove the person who's first in the queue and print his name.

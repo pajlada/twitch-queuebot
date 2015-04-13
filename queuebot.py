@@ -94,7 +94,7 @@ class QueueBot(irc.client.SimpleIRCClient):
     def c_queue_list(self, chatconn, username, extra_message):
         if username in self.admins:
             if self.queue_active:
-                combined_queue = self.sub_queue + self.queue
+                combined_queue = self.get_queue()
                 if len(combined_queue) > 0:
                     queue_str = 'Current queue: {0}'.format(', '.join(combined_queue[:15]))
                     if len(combined_queue) > 15:
@@ -108,7 +108,7 @@ class QueueBot(irc.client.SimpleIRCClient):
     def c_queue_pop(self, chatconn, username, extra_message):
         if username in self.admins:
             if self.queue_active:
-                combined_queue = self.sub_queue + self.queue
+                combined_queue = self.get_queue()
                 if len(combined_queue) > 0:
                     winner = combined_queue.pop(0)
                     self.say('{0} is next in queue!'.format(winner))
@@ -120,6 +120,36 @@ class QueueBot(irc.client.SimpleIRCClient):
                     self.say('The queue is empty BibleThump')
             else:
                 self.say('Queue is not active. Enable it by typing !queue enable')
+
+    def c_queue_pos(self, chatconn, username, extra_message):
+        if self.queue_active:
+            combined_queue = self.get_queue()
+            check_self = True
+            i = 1
+            found = False
+
+            if len(extra_message) > 0 and username in self.admins:
+                check_self = False
+                un_check = extra_message
+            else:
+                un_check = username
+
+            for un in combined_queue:
+                if un_check == un:
+                    found = True
+                    break
+                i += 1
+
+            if found:
+                if check_self:
+                    self.say('You are at position #{0} in the queue!'.format(i))
+                else:
+                    self.say('{0} is at position #{1} in the queue!'.format(un_check, i))
+            else:
+                if check_self:
+                    self.say('You are not queued BibleThump')
+                else:
+                    self.say('{0} is not queued BibleThump'.format(un_check))
 
     def __init__(self, target, config):
         irc.client.SimpleIRCClient.__init__(self)
@@ -143,6 +173,7 @@ class QueueBot(irc.client.SimpleIRCClient):
         self.commands['!queue pop'] = self.c_queue_pop
         self.commands['!queue winner'] = self.c_queue_pop
         self.commands['!queue next'] = self.c_queue_pop
+        self.commands['!queue pos'] = self.c_queue_pos
 
     def on_mode(self, chatconn, event):
         if len(event.arguments) > 1:

@@ -12,7 +12,7 @@ Just clone this git repo!
 
 ## Install
 
-The bot depends on one Python dependency, namely the library called `irc`.
+The bot depends on one Python dependency, namely the library called `irc` (https://bitbucket.org/jaraco/irc).
 
     [sudo] pip install irc
     
